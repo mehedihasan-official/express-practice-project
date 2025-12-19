@@ -11,8 +11,10 @@ const app: Application = express();
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World!");
-});
+const getAController = (req: Request, res: Response) => {
+  res.send("Practice Project Backend is running...");
+}
+
+app.get("/", getAController);
 
 export default app;
