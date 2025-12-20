@@ -3,9 +3,14 @@ import { StudentController } from "./student.controller";
 
 const router = express.Router();
 
-
 //will call controller func
 
 router.post("/create-student", StudentController.createStudent);
+
+//Student router to get Students data:
+router.get("/", StudentController.getAllStudents);
+
+//Router to get single Student data by id:
+router.get("/:id", StudentController.getSingleStudent);
 
 export const StudentRoutes = router;

@@ -1,5 +1,3 @@
-import { Schema, model, connect } from 'mongoose';
-
 // Student Interface Definitions
 export type Guardian = {
   fatherName: string;
@@ -36,6 +34,5 @@ export type Student = {
   guardian: Guardian;
   localGuardian?: LocalGuardian;
   profileImage?: string;
-  isActive: 'active' | 'inactive';
+  isActive: "active" | "inactive";
 };
-
