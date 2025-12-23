@@ -1,10 +1,17 @@
 import { Request, Response } from "express";
 import { StudentServices } from "./student.service";
+import { studentValidationJoiSchema } from "./student.validaton";
+
 
 // controller function to create a student
 const createStudent = async (req: Request, res: Response) => {
+
+
   try {
+
     const { student: StudentData } = req.body;
+
+    const {error, value }= studentValidationJoiSchema.validate(StudentData);
 
     // will call service function to send this data
     const result = await StudentServices.createStudentIntoDB(StudentData);
