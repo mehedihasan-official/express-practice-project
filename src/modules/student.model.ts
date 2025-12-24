@@ -1,20 +1,19 @@
 import { model, Schema } from "mongoose";
-import validator from "validator";
 import {
-  Guardian,
-  LocalGuardian,
-  Student,
-  UserName,
+  StudentMethod,
+  StudentModel,
+  TGuardian,
+  TLocalGuardian,
+  TStudent,
+  TUserName,
 } from "./student/student.interface";
 
-
-
 // Mongoose Schema Definitions
-``
-const userNameSchema = new Schema<UserName>({
+``;
+const userNameSchema = new Schema<TUserName>({
   firstName: {
     type: String,
-    required: [true, "First name is required"], 
+    required: [true, "First name is required"],
     trim: true,
     maxlength: [20, "First name cannot exceed 20 characters"],
   },
@@ -28,11 +27,11 @@ const userNameSchema = new Schema<UserName>({
     type: String,
     required: [true, "Last name is required"],
     trim: true,
-    maxlength: [20, "Last name cannot exceed 20 characters"]
+    maxlength: [20, "Last name cannot exceed 20 characters"],
   },
 });
 
-const GuardianSchema = new Schema<Guardian>({
+const GuardianSchema = new Schema<TGuardian>({
   fatherName: { type: String, required: [true, "Father name is required"] },
   fatherOccupation: {
     type: String,
@@ -49,14 +48,14 @@ const GuardianSchema = new Schema<Guardian>({
   },
 });
 
-const LocalGuardianSchema = new Schema<LocalGuardian>({
+const LocalGuardianSchema = new Schema<TLocalGuardian>({
   name: { type: String, required: [true, "Name is required"] },
   occupation: { type: String, required: [true, "Occupation is required"] },
   contactNo: { type: String, required: [true, "Contact number is required"] },
   relation: { type: String, required: [true, "Relation is required"] },
 });
 
-const studentSchema = new Schema<Student>({
+const studentSchema = new Schema<TStudent, StudentModel, StudentMethod>({
   id: {
     type: String,
     required: [true, "Student ID is required"],
@@ -80,7 +79,6 @@ const studentSchema = new Schema<Student>({
     type: String,
     required: true,
     unique: true,
-    
   },
   contactNo: { type: String, required: true, unique: true },
   emergencyContactNo: { type: String, required: true },
@@ -113,7 +111,10 @@ const studentSchema = new Schema<Student>({
     default: "active",
   },
 });
-
+studentSchema.methods.isUserExist = async function (id: string){
+  const existingUser = await Student.findOne({id});
+  return existingUser;
+}
 //here is model:
 
-export const StudentModel = model<Student>("Student", studentSchema);
+export const Student = model<TStudent, StudentMethod>("Student", studentSchema);

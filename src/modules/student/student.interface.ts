@@ -1,5 +1,7 @@
+import { Model } from "mongoose";
+
 // Student Interface Definitions
-export type Guardian = {
+export type TGuardian = {
   fatherName: string;
   fatherOccupation: string;
   fatherContactNo: string;
@@ -7,22 +9,22 @@ export type Guardian = {
   motherOccupation: string;
 };
 
-export type UserName = {
+export type TUserName = {
   firstName: string;
   middleName: string;
   lastName: string;
 };
 
-export type LocalGuardian = {
+export type TLocalGuardian = {
   name: string;
   occupation: string;
   contactNo: string;
   relation: string;
 };
 
-export type Student = {
+export type TStudent = {
   id: string;
-  name: UserName;
+  name: TUserName;
   gender: "male" | "female";
   dateOfBirth: string;
   email: string;
@@ -31,8 +33,18 @@ export type Student = {
   bloodGroup?: "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
   presentAddress: string;
   permanentAddress: string;
-  guardian: Guardian;
-  localGuardian?: LocalGuardian;
+  guardian: TGuardian;
+  localGuardian?: TLocalGuardian;
   profileImage?: string;
   isActive: "active" | "inactive";
 };
+
+export type StudentMethod = {
+  isUserExist(id: string): Promise<TStudent | null>;
+};
+
+export type StudentModel = Model<
+  TStudent,
+  Record<string, never>,
+  StudentMethod
+>;

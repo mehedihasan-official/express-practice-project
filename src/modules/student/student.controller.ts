@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { StudentServices } from "./student.service";
-import { studentValidationJoiSchema } from "./student.validaton";
+import { studentValidationZodSchema } from "./student.zod.validation";
 
 
 // controller function to create a student
@@ -11,10 +11,10 @@ const createStudent = async (req: Request, res: Response) => {
 
     const { student: StudentData } = req.body;
 
-    const {error, value }= studentValidationJoiSchema.validate(StudentData);
-
+    // Validate incoming data using Zod schema
+    const zodParseData = studentValidationZodSchema.parse(StudentData);
     // will call service function to send this data
-    const result = await StudentServices.createStudentIntoDB(StudentData);
+    const result = await StudentServices.createStudentIntoDB(zodParseData);
 
     //send response
     res.status(200).json({
@@ -22,11 +22,11 @@ const createStudent = async (req: Request, res: Response) => {
       message: "Student created successfully",
       data: result,
     });
-  } catch (err) {
-    res.status(400).json({
+  } catch (err: any) {
+    res.status(500).json({
       success: false,
-      message: "Failed to create student",
-      error: err,
+      message: err.message || "Failed to create student",
+      error: err, 
     });
   }
 };
