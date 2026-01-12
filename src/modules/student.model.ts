@@ -55,11 +55,17 @@ const LocalGuardianSchema = new Schema<TLocalGuardian>({
   relation: { type: String, required: [true, "Relation is required"] },
 });
 
-const studentSchema = new Schema<TStudent, StudentModel, StudentMethod>({
+
+
+const studentSchema = new Schema<TStudent, StudentModel>({
   id: {
     type: String,
     required: [true, "Student ID is required"],
     unique: true,
+  },
+  password: {
+    type: String,
+    required: [true, "Password is required"],
   },
   name: {
     type: userNameSchema,
@@ -111,10 +117,31 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethod>({
     default: "active",
   },
 });
-studentSchema.methods.isUserExist = async function (id: string){
-  const existingUser = await Student.findOne({id});
+
+
+// pre save middleware / hook: will work on create() save()
+studentSchema.pre("save", async function (){
+  console.log(this, "pre hook: we will save the data")
+})
+
+// post save middleware / hook:
+studentSchema.post("save", async function (){
+  console.log(this, "post hook: we saved our data data ")
+})
+
+//creating a custom static method:
+studentSchema.statics.isUserExist = async function(id: string){
+  const existingUser = await Student.findOne(({id}));
   return existingUser;
 }
+
+//creating a custom instance method:
+// studentSchema.methods.isUserExist = async function (id: string){
+//   const existingUser = await Student.findOne({id});
+//   return existingUser;
+// }
+
+
 //here is model:
 
 export const Student = model<TStudent, StudentMethod>("Student", studentSchema);

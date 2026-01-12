@@ -1,14 +1,28 @@
 import { Student } from "../student.model";
 import { TStudent } from "./student.interface";
+import { cors } from 'cors';
 
 // service function to create a student in DB
 const createStudentIntoDB = async (studentData: TStudent) => {
-  const student = new Student(studentData); //create instance
-  
-  if (await student.isUserExist(studentData.id)){
+
+
+   if (await Student.isUserExist(studentData.id)) {
     throw new Error("Student already exists");
   }
-  const result = await student.save(); // build in instance method to save data
+
+  //build in Method Approach:
+  const result = await Student.create(studentData)
+
+ 
+//Static Method Approach:
+  // const student = new Student(studentData); //create instance
+  
+  // if (await student.isUserExist(studentData.id)){
+  //   throw new Error("Student already exists");
+  // }
+
+
+  // const result = await student.save(); // build in instance method to save data
   return result;
 };
 
