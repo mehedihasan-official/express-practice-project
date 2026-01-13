@@ -13,4 +13,7 @@ router.get("/", StudentController.getAllStudents);
 //Router to get single Student data by id:
 router.get("/:id", StudentController.getSingleStudent);
 
+//Router to Delete Student data by id:
+router.delete("/:id", StudentController.deleteStudent);
+
 export const StudentRoutes = router;

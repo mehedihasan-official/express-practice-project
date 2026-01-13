@@ -1,4 +1,6 @@
+import bcrypt from "bcrypt";
 import { model, Schema } from "mongoose";
+import config from "../app/config";
 import {
   StudentMethod,
   StudentModel,
@@ -54,8 +56,6 @@ const LocalGuardianSchema = new Schema<TLocalGuardian>({
   contactNo: { type: String, required: [true, "Contact number is required"] },
   relation: { type: String, required: [true, "Relation is required"] },
 });
-
-
 
 const studentSchema = new Schema<TStudent, StudentModel>({
   id: {
@@ -116,31 +116,46 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     },
     default: "active",
   },
+
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  }
+ 
 });
 
-
 // pre save middleware / hook: will work on create() save()
-studentSchema.pre("save", async function (){
-  console.log(this, "pre hook: we will save the data")
-})
+studentSchema.pre("save", async function () {
+  const user = this;
+
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bycrypt_salt_rounds)
+  );
+});
 
 // post save middleware / hook:
-studentSchema.post("save", async function (){
-  console.log(this, "post hook: we saved our data data ")
-})
+studentSchema.post("save", async function (doc, next) {
+  doc.password = '';
+  next();
+});
+
+// query middleware:
+studentSchema.pre( 'find', function (next){
+  console.log(this)
+});
 
 //creating a custom static method:
-studentSchema.statics.isUserExist = async function(id: string){
-  const existingUser = await Student.findOne(({id}));
+studentSchema.statics.isUserExist = async function (id: string) {
+  const existingUser = await Student.findOne({ id });
   return existingUser;
-}
+};
 
 //creating a custom instance method:
 // studentSchema.methods.isUserExist = async function (id: string){
 //   const existingUser = await Student.findOne({id});
 //   return existingUser;
 // }
-
 
 //here is model:
 
