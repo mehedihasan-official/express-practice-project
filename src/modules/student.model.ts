@@ -122,6 +122,11 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     default: false,
   }
  
+},
+{
+  toJSON: {
+    virtuals: true
+  }
 });
 
 // pre save middleware / hook: will work on create() save()
@@ -142,7 +147,21 @@ studentSchema.post("save", async function (doc, next) {
 
 // query middleware:
 studentSchema.pre( 'find', function (next){
-  console.log(this)
+  this.find({ isDeleted: {$ne: true}})
+
+  
+});
+
+
+// query middleware:
+studentSchema.pre( 'findOne', function (next){
+  this.find({ isDeleted: {$ne: true}})
+
+});
+
+// query middleware:
+studentSchema.pre( 'aggregate', function (next){
+  console.log(this.pipeline)
 });
 
 //creating a custom static method:
@@ -151,6 +170,11 @@ studentSchema.statics.isUserExist = async function (id: string) {
   return existingUser;
 };
 
+
+//Virtual:
+studentSchema.virtual("fullName").get(function(){
+  return `${this.name.firstName} ${this.name.middleName ? this.name.middleName : ""} ${this.name.lastName}`
+});
 //creating a custom instance method:
 // studentSchema.methods.isUserExist = async function (id: string){
 //   const existingUser = await Student.findOne({id});

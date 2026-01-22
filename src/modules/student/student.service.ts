@@ -35,7 +35,8 @@ const getSingleStudentFromDB = async (id: string) => {
 
 // service function to delete student from DB by id
 const deleteStudentFromDB = async (id: string) => {
-  const result = await Student.updateOne({ id }, { isDeleted: true });
+  // const result = await Student.updateOne({ id }, { isDeleted: true });
+  const result = await Student.aggregate([{ $match: { id: id } }]);
   return result;
 };
 

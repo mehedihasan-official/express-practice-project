@@ -73,4 +73,6 @@ export const studentValidationZodSchema = z.object({
       error: "Status can't be other than active/inactive",
     })
     .default("active"),
+
+  isDeleted: z.boolean().optional(),
 });
