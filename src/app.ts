@@ -7,6 +7,9 @@ import express, {
 } from "express";
 import { StudentRoutes } from "./app/modules/student/student.route";
 import { UserRoutes } from "./app/modules/user/user.route";
+import globalErrorhandler from "./app/middlewares/globalErrorhandler";
+import notFound from "./app/middlewares/notFound";
+import router from "./app/routes";
 
 const app: Application = express();
 
@@ -16,26 +19,19 @@ app.use(cors());
 
 // api/v1/students/student-create
 //application routes
-app.use("/api/v1/students", StudentRoutes);
+app.use("/api/v1", router);
 
-app.use("/api/v1/users", UserRoutes);
 
-const getAController = (req: Request, res: Response) => {
+const test = (req: Request, res: Response) => {
   res.send("Practice Project Backend is running...");
 };
 
-app.get("/", getAController);
+app.get("/", test);
+
+app.use(globalErrorhandler)
 
 //Not Found(here will be middleware)
-app.use((err: any, req: Request, res: Response, next:NextFunction)=> {
-  const statuseCode = 500;
-  const message = err.message || 'Something went wrong';
-  return res.status(statuseCode).json({
-    success: false,
-    message,
-    error: err
-  })
-})
+app.use(notFound);
 
 
 export default app;
