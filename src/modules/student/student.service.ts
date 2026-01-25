@@ -1,28 +1,10 @@
-import { Student } from "../student.model";
-import { TStudent } from "./student.interface";
+import { Student } from "./student.model";
 
 // service function to create a student in DB
-const createStudentIntoDB = async (studentData: TStudent) => {
-  if (await Student.isUserExist(studentData.id)) {
-    throw new Error("Student already exists");
-  }
 
-  //build in Method Approach:
-  const result = await Student.create(studentData);
-
-  //Static Method Approach:
-  // const student = new Student(studentData); //create instance
-
-  // if (await student.isUserExist(studentData.id)){
-  //   throw new Error("Student already exists");
-  // }
-
-  // const result = await student.save(); // build in instance method to save data
-  return result;
-};
 
 // service function to get all students from DB
-const GetAllStudentsFromDB = async () => {
+const getAllStudentsFromDB = async () => {
   const result = await Student.find();
   return result;
 };
@@ -41,8 +23,7 @@ const deleteStudentFromDB = async (id: string) => {
 };
 
 export const StudentServices = {
-  createStudentIntoDB,
-  GetAllStudentsFromDB,
+  getAllStudentsFromDB,
   getSingleStudentFromDB,
   deleteStudentFromDB,
 };

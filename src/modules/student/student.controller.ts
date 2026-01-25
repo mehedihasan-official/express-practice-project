@@ -1,43 +1,67 @@
-import { Request, Response } from "express";
-import { productValidationSchema } from "../validations/product.validation";
-import { ProductService } from "../services/product.services";
+import { Request, Response } from "express"
+import { StudentServices } from "./student.service";
 
-/**
- * Create a new product
- * POST /api/products
- */
-const createProduct = async (req: Request, res: Response) => {
+
+// get single student data:
+const getSingleStudent = async (req: Request, res: Response) => {
   try {
-    // 1️⃣ Validate request body using Zod
-    const validatedData = productValidationSchema.parse(req.body);
+    const { studentId} = req.params;
 
-    // 2️⃣ Call service layer
-    const result = await ProductService.createProductIntoDB(validatedData);
-
-    // 3️⃣ Send success response
-    res.status(201).json({
+    const result = await StudentServices.getSingleStudentFromDB( studentId as string);
+    res.status(200).json({
       success: true,
-      message: "Product created successfully!",
+      message: "Student fetched successfully",
       data: result,
-    });
-  } catch (error: any) {
-    // Zod validation error
-    if (error.name === "ZodError") {
-      return res.status(400).json({
-        success: false,
-        message: "Validation failed",
-        error: error.errors,
-      });
-    }
-
-    // Duplicate product / service errors
+    })
+  } catch (err){
     res.status(500).json({
       success: false,
-      message: error.message || "Product creation failed",
-    });
+      message: "Failed to fetch student",
+      error: err,
+    })
   }
-};
+}
 
-export const ProductController = {
-  createProduct,
-};
+//get all students data:
+const getAllStudents = async (req: Request, res: Response) => {
+  try {
+    const result = await StudentServices.getAllStudentsFromDB();
+    res.status(200).json({
+      success: true,
+      message: "Students fetched successfully",
+      data: result,
+    })
+  } catch (err){
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch students",
+      error: err,
+    })
+  }
+}
+
+//delete student data:
+const deleteStudent = async (req: Request, res: Response) => {
+  try {
+    const { studentId} = req.params;
+    const result = await StudentServices.deleteStudentFromDB( studentId as string);
+    res.status(200).json({
+      success: true,
+      message: "Student deleted successfully",
+      data: result,
+    })
+  } catch (err){
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete student",
+      error: err,
+    })
+  }
+}
+
+export const StudentController = {
+  getSingleStudent,
+  getAllStudents,
+  deleteStudent,
+}
+

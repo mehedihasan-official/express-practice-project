@@ -1,14 +1,13 @@
 import bcrypt from "bcrypt";
 import { model, Schema } from "mongoose";
-import config from "../app/config";
+import config from "../../app/config";
 import {
-  StudentMethod,
-  StudentModel,
-  TGuardian,
-  TLocalGuardian,
-  TStudent,
-  TUserName,
-} from "./student/student.interface";
+    StudentModel,
+    TGuardian,
+    TLocalGuardian,
+    TStudent,
+    TUserName,
+} from "./student.interface";
 
 // Mongoose Schema Definitions
 ``;
@@ -62,7 +61,16 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     type: String,
     required: [true, "Student ID is required"],
     unique: true,
+    ref: 'User',
   },
+
+  user: {
+    type: Schema.Types.ObjectId,
+    required: [true, 'ID is required'],
+    unique: true
+  },
+
+
   password: {
     type: String,
     required: [true, "Password is required"],
@@ -108,14 +116,6 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     required: true,
   },
   profileImage: { type: String },
-  isActive: {
-    type: String,
-    enum: {
-      values: ["active", "inactive"],
-      message: "Status can't be other than active/inactive",
-    },
-    default: "active",
-  },
 
   isDeleted: {
     type: Boolean,
@@ -183,4 +183,4 @@ studentSchema.virtual("fullName").get(function(){
 
 //here is model:
 
-export const Student = model<TStudent, StudentMethod>("Student", studentSchema);
+export const Student = model<TStudent, StudentModel>("Student", studentSchema);

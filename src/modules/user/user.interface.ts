@@ -1,7 +1,7 @@
 
 
 export type TUser = {
-    is: string;
+    id: string;
     password: string;
     needsPasswordChange: boolean;
     role: 'admin' | 'student' | 'faculty';

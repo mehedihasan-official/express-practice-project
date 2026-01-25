@@ -1,11 +1,10 @@
 import express from "express";
 import { StudentController } from "./student.controller";
+import { UserController } from "../user/user.controller";
 
 const router = express.Router();
 
 //will call controller func
-
-router.post("/create-student", StudentController.createStudent);
 
 //Student router to get Students data:
 router.get("/", StudentController.getAllStudents);
