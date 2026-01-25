@@ -1,6 +1,4 @@
-import bcrypt from "bcrypt";
 import { model, Schema } from "mongoose";
-import config from "../../app/config";
 import {
     StudentModel,
     TGuardian,
@@ -61,19 +59,13 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     type: String,
     required: [true, "Student ID is required"],
     unique: true,
-    ref: 'User',
   },
 
   user: {
     type: Schema.Types.ObjectId,
+    ref: 'User',
     required: [true, 'ID is required'],
-    unique: true
-  },
-
-
-  password: {
-    type: String,
-    required: [true, "Password is required"],
+    unique: true,
   },
   name: {
     type: userNameSchema,
@@ -129,27 +121,15 @@ const studentSchema = new Schema<TStudent, StudentModel>({
   }
 });
 
-// pre save middleware / hook: will work on create() save()
-studentSchema.pre("save", async function () {
-  const user = this;
-
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bycrypt_salt_rounds)
-  );
+//Virtual:
+studentSchema.virtual("fullName").get(function(){
+  return `${this.name.firstName} ${this.name.middleName ? this.name.middleName : ""} ${this.name.lastName}`
 });
 
-// post save middleware / hook:
-studentSchema.post("save", async function (doc, next) {
-  doc.password = '';
-  next();
-});
 
 // query middleware:
 studentSchema.pre( 'find', function (next){
   this.find({ isDeleted: {$ne: true}})
-
-  
 });
 
 
@@ -161,7 +141,7 @@ studentSchema.pre( 'findOne', function (next){
 
 // query middleware:
 studentSchema.pre( 'aggregate', function (next){
-  console.log(this.pipeline)
+  this.pipeline().unshift({$match: { isDeleted: { $ne: true}}})
 });
 
 //creating a custom static method:
@@ -171,10 +151,7 @@ studentSchema.statics.isUserExist = async function (id: string) {
 };
 
 
-//Virtual:
-studentSchema.virtual("fullName").get(function(){
-  return `${this.name.firstName} ${this.name.middleName ? this.name.middleName : ""} ${this.name.lastName}`
-});
+
 //creating a custom instance method:
 // studentSchema.methods.isUserExist = async function (id: string){
 //   const existingUser = await Student.findOne({id});

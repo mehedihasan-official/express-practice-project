@@ -1,11 +1,12 @@
 import cors from "cors";
 import express, {
+  NextFunction,
   type Application,
   type Request,
   type Response,
 } from "express";
-import { StudentRoutes } from "./modules/student/student.route";
-import { UserRoutes } from "./modules/user/user.route";
+import { StudentRoutes } from "./app/modules/student/student.route";
+import { UserRoutes } from "./app/modules/user/user.route";
 
 const app: Application = express();
 
@@ -24,5 +25,17 @@ const getAController = (req: Request, res: Response) => {
 };
 
 app.get("/", getAController);
+
+//Not Found(here will be middleware)
+app.use((err: any, req: Request, res: Response, next:NextFunction)=> {
+  const statuseCode = 500;
+  const message = err.message || 'Something went wrong';
+  return res.status(statuseCode).json({
+    success: false,
+    message,
+    error: err
+  })
+})
+
 
 export default app;

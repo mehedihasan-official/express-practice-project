@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { required } from './../../../node_modules/zod/v4/mini/schemas';
 
 // 🔹 Reusable name validator (Capitalized)
 const capitalizeName = z.string().regex(/^[A-Z][a-z]*$/, {
@@ -48,7 +47,7 @@ export const studentValidationZodSchema = z.object({
     error: "The gender field is not supported",
   }),
 
-  dateOfBirth: z.string().min(1),
+  dateOfBirth: z.string(),
 
   email: z.email({ message: "Email must be a valid email address" }),
 
@@ -60,19 +59,13 @@ export const studentValidationZodSchema = z.object({
     error: "The blood group field is not supported",
   }),
 
-  presentAddress: z.string().min(1),
-  permanentAddress: z.string().min(1),
-
+  presentAddress: z.string(),
+  permanentAddress: z.string(),
   guardian: guardianValidationSchema,
   localGuardian: localGuardValidationSchema,
 
   profileImage: z.string().optional(),
 
-  isActive: z
-    .enum(["active", "inactive"], {
-      error: "Status can't be other than active/inactive",
-    })
-    .default("active"),
 
   isDeleted: z.boolean().optional(),
 });

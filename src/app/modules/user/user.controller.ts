@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { error } from "console";
 import { userDataService } from "./user.service";
 
 
 //Create Student::
-const createStudentIntoDB = async(req: Request, res: Response) => {
+const createStudentIntoDB = async(req: Request, res: Response, next: NextFunction) => {
     try{
          const {password, student: studentData} = req.body;
 
@@ -18,12 +18,8 @@ const createStudentIntoDB = async(req: Request, res: Response) => {
          })
 
     }catch(err){
-        res.status(500).json({
-            success: false,
-            message: "Failed to create student",
-            error: error
-        })
-    }
+        next(err);
+}
 }
 
 export const UserController = {
