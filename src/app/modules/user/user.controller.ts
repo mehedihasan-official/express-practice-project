@@ -1,13 +1,14 @@
-import { NextFunction, Request, Response } from "express";
+import {  RequestHandler } from "express";
 import { error } from "console";
 import { userDataService } from "./user.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
+import catchAsync from "../../utils/catchAsync";
 
 
 //Create Student::
-const createStudentIntoDB = async(req: Request, res: Response, next: NextFunction) => {
-    try{
+const createStudentIntoDB = catchAsync(async(req, res, next) => {
+   
          const {password, student: studentData} = req.body;
 
          //call service layer
@@ -20,11 +21,7 @@ const createStudentIntoDB = async(req: Request, res: Response, next: NextFunctio
             data: result
         })
 
-         
-    }catch(err){
-        next(err);
-}
-}
+})
 
 export const UserController = {
     createStudentIntoDB

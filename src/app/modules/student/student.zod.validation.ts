@@ -38,34 +38,33 @@ const localGuardValidationSchema = z.object({
 
 // 🔹 Main Student Schema
 export const studentValidationZodSchema = z.object({
-  id: z.string().min(1),
-  password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
+  body: z.object({
+    password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
+  
+   student: z.object({
+    name: userNameValidationSchema,
+  
+    gender: z.enum(["male", "female"], {
+      error: "The gender field is not supported",
+    }),
+  
+    dateOfBirth: z.string(),
+    email: z.email({ message: "Email must be a valid email address" }),
+    contactNo: z.string().min(1),
+    emergencyContactNo: z.string().min(1),
+    bloodGroup: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"], {
+      error: "The blood group field is not supported",
+    }),
+    presentAddress: z.string(),
+    permanentAddress: z.string(),
+    guardian: guardianValidationSchema,
+    localGuardian: localGuardValidationSchema,
+    profileImage: z.string().optional(),
+ 
+  })
+   })
+})
 
-  name: userNameValidationSchema,
-
-  gender: z.enum(["male", "female"], {
-    error: "The gender field is not supported",
-  }),
-
-  dateOfBirth: z.string(),
-
-  email: z.email({ message: "Email must be a valid email address" }),
-
-  contactNo: z.string().min(1),
-
-  emergencyContactNo: z.string().min(1),
-
-  bloodGroup: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"], {
-    error: "The blood group field is not supported",
-  }),
-
-  presentAddress: z.string(),
-  permanentAddress: z.string(),
-  guardian: guardianValidationSchema,
-  localGuardian: localGuardValidationSchema,
-
-  profileImage: z.string().optional(),
-
-
-  isDeleted: z.boolean().optional(),
-});
+export const studentValidations = {
+  studentValidationZodSchema
+}
