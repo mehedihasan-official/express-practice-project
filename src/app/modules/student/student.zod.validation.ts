@@ -37,7 +37,7 @@ const localGuardValidationSchema = z.object({
 });
 
 // 🔹 Main Student Schema
-export const studentValidationZodSchema = z.object({
+export const createStudentValidationZodSchema = z.object({
   body: z.object({
     password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
   
@@ -48,7 +48,7 @@ export const studentValidationZodSchema = z.object({
       error: "The gender field is not supported",
     }),
   
-    dateOfBirth: z.string(),
+    dateOfBirth: z.date().optional(),
     email: z.email({ message: "Email must be a valid email address" }),
     contactNo: z.string().min(1),
     emergencyContactNo: z.string().min(1),
@@ -66,5 +66,5 @@ export const studentValidationZodSchema = z.object({
 })
 
 export const studentValidations = {
-  studentValidationZodSchema
+ createStudentValidationZodSchema
 }

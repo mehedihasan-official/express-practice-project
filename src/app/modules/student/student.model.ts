@@ -8,7 +8,6 @@ import {
 } from "./student.interface";
 
 // Mongoose Schema Definitions
-``;
 const userNameSchema = new Schema<TUserName>({
   firstName: {
     type: String,
@@ -80,7 +79,7 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     required: [true, "Gender is required"],
   },
 
-  dateOfBirth: { type: String, required: true },
+  dateOfBirth: { type: Date , required: true },
   email: {
     type: String,
     required: true,
