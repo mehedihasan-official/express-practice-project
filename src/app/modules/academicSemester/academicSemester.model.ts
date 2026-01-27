@@ -1,11 +1,10 @@
 import { model, Schema } from "mongoose";
 import {
-  TAcademicSemester,
-} from "./academicSemester.interface";
-import { AcademicSemesterCodes, Months, SemestersNameSchema } from "./academicSemester.constant";
-
-
-
+  AcademicSemesterCodes,
+  Months,
+  SemestersNameSchema,
+} from "./academicSemester.constant";
+import { TAcademicSemester } from "./academicSemester.interface";
 
 export const academicSemesterSchema = new Schema<TAcademicSemester>({
   name: {
@@ -34,17 +33,16 @@ export const academicSemesterSchema = new Schema<TAcademicSemester>({
   },
 });
 
-
-academicSemesterSchema.pre("save", async function(next){
+academicSemesterSchema.pre("save", async function (next) {
   // logic before saving data:
   const isSemesterExist = await academicSemester.findOne({
     name: this.name,
-    year: this.year
-  })
-  if (isSemesterExist){
-    throw new Error("Academic Semester already exists!")
+    year: this.year,
+  });
+  if (isSemesterExist) {
+    throw new Error("Academic Semester already exists!");
   }
-})
+});
 
 export const academicSemester = model<TAcademicSemester>(
   "AcademicSemester",
