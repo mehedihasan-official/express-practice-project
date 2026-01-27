@@ -6,7 +6,7 @@ import { AcademicSemesterCodes, Months, SemestersNameSchema } from "./academicSe
 const createAcademicSemesterValidationSchema = z.object({
     body: z.object({
         name: z.enum([...SemestersNameSchema] as [string, ...string[]]),
-        year: z.date,
+        year: z.string(),
         code: z.enum([...AcademicSemesterCodes] as [string, ...string[]]),
         startMonth: z.enum([...Months] as [string, ...string[]]),
         endMonth: z.enum([...Months] as [string, ...string[]])

@@ -19,6 +19,9 @@ const createAcademicSemester = catchAsync(async(req: Request, res: Response) => 
     })
 })
 
+// get all academic semester controller function here:
+const getAllAcademicSemester = catchAsync(async (req: Request, res: Response) =>{}
+
 
 export const AcademicSemesterController = {
     createAcademicSemester

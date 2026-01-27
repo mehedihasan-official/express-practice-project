@@ -48,7 +48,7 @@ export const createStudentValidationZodSchema = z.object({
       error: "The gender field is not supported",
     }),
   
-    dateOfBirth: z.date().optional(),
+    dateOfBirth: z.string().optional(),
     email: z.email({ message: "Email must be a valid email address" }),
     contactNo: z.string().min(1),
     emergencyContactNo: z.string().min(1),
