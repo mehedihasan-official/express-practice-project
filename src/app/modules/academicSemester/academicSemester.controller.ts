@@ -20,9 +20,19 @@ const createAcademicSemester = catchAsync(async(req: Request, res: Response) => 
 })
 
 // get all academic semester controller function here:
-const getAllAcademicSemester = catchAsync(async (req: Request, res: Response) =>{}
+const getAllAcademicSemestersFromDb = catchAsync(async(req: Request, res: Response) =>{
+    const result = await AcademicSemesterDataServices.getAllAcademicSemestersFromDb();
 
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Academic Semester retrived successfully",
+        data: result,
+    })
+
+})
 
 export const AcademicSemesterController = {
-    createAcademicSemester
+    createAcademicSemester,
+    getAllAcademicSemestersFromDb,
 }
