@@ -1,5 +1,4 @@
-import {  RequestHandler } from "express";
-import { error } from "console";
+
 import { userDataService } from "./user.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";

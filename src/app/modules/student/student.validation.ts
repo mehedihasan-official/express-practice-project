@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Types } from 'mongoose';
 
 // 🔹 Reusable name validator (Capitalized)
 const capitalizeName = z.string().regex(/^[A-Z][a-z]*$/, {
@@ -59,6 +60,7 @@ export const createStudentValidationZodSchema = z.object({
     permanentAddress: z.string(),
     guardian: guardianValidationSchema,
     localGuardian: localGuardValidationSchema,
+    admissionSemester: z.string(),
     profileImage: z.string().optional(),
  
   })

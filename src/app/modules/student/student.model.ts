@@ -6,6 +6,7 @@ import {
     TStudent,
     TUserName,
 } from "./student.interface";
+import { string } from "joi";
 
 // Mongoose Schema Definitions
 const userNameSchema = new Schema<TUserName>({
@@ -79,7 +80,7 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     required: [true, "Gender is required"],
   },
 
-  dateOfBirth: { type: Date , required: true },
+  dateOfBirth: { type: String , required: true },
   email: {
     type: String,
     required: true,
@@ -107,6 +108,12 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     required: true,
   },
   profileImage: { type: String },
+
+  admissionSemester:{
+    type: Schema.Types.ObjectId,
+    ref: 'AcademicSemester',
+    required: true
+  },
 
   isDeleted: {
     type: Boolean,
