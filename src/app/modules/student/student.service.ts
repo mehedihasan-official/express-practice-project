@@ -1,11 +1,15 @@
 import { Student } from "./student.model";
 
 // service function to create a student in DB
-
-
+ 
 // service function to get all students from DB
 const getAllStudentsFromDB = async () => {
-  const result = await Student.find();
+  const result = await Student.find().populate("admissionSemester").populate({
+    path: "academicDepartment",
+    populate: {
+      path: "academicFaculty"
+    }
+  })
   return result;
 };
 

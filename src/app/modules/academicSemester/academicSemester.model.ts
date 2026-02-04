@@ -31,7 +31,11 @@ export const academicSemesterSchema = new Schema<TAcademicSemester>({
     type: String,
     required: true,
   },
-});
+},
+{
+    timestamps: true,
+  }
+);
 
 academicSemesterSchema.pre("save", async function (next) {
   // logic before saving data:

@@ -6,7 +6,7 @@ import {
     TStudent,
     TUserName,
 } from "./student.interface";
-import { string } from "joi";
+import { required, string } from "joi";
 
 // Mongoose Schema Definitions
 const userNameSchema = new Schema<TUserName>({
@@ -114,6 +114,16 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     ref: 'AcademicSemester',
     required: true
   },
+  academicDepartment: {
+    type: Schema.Types.ObjectId,
+    ref: "AcademicDepartment",
+    required: true,
+  },
+  academicFaculty: {
+    type: Schema.Types.ObjectId,
+    ref: "AcademicFaculty",
+    required: true,
+  },
 
   isDeleted: {
     type: Boolean,
@@ -123,7 +133,7 @@ const studentSchema = new Schema<TStudent, StudentModel>({
 },
 {
   toJSON: {
-    virtuals: true
+    virtuals: true,
   }
 });
 

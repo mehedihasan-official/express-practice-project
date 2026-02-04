@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from "express";
 
 
 const globalErrorhandler = (err: any, req: Request, res: Response, next:NextFunction)=> {
-    const statuseCode = 500;
+    const statusCode = err.statusCode ||500;
     const message = err.message || 'Something went wrong';
-    return res.status(statuseCode).json({
+    return res.status(statusCode).json({
       success: false,
       message,
       error: err
