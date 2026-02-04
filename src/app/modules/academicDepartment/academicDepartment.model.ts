@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 import { TAcademicDepartment } from "./academicDepartment.interface";
 import  httpStatus  from 'http-status';
+import AppError from "../../errors/AppError";
 
 export const createAcademicDepartmentSchema = new Schema<TAcademicDepartment>({
   name: {
@@ -20,21 +21,7 @@ export const createAcademicDepartmentSchema = new Schema<TAcademicDepartment>({
   });
 
 
-  
-  export class AppError extends Error{
-    public statusCode: number;
-    
-    constructor(statusCode: number,  message: string,  stack?: ''){
-      super(message);
-      this.statusCode = statusCode;
 
-      if (stack){
-        this.stack = stack;
-      } else {
-        Error.captureStackTrace(this, this.constructor);
-      }
-    }
-  }
 
   createAcademicDepartmentSchema.pre('save', async function (next){
      const isDepartmentExists = await academicDepartment.findOne({name: this.name});
