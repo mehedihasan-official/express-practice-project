@@ -6,10 +6,10 @@ import { StudentServices } from "./student.service";
 
 // get single student data:
 const getSingleStudent = catchAsync(async (req, res, next) => {
-  const { studentId } = req.params;
+  const { id } = req.params;
 
   const result = await StudentServices.getSingleStudentFromDB(
-    studentId as string,
+    id as string,
   );
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -30,6 +30,24 @@ const getAllStudents: RequestHandler = catchAsync(async (req, res, next) => {
   });
 });
 
+
+
+
+//update student data:
+const updateStudent:RequestHandler = catchAsync(async (req, res, next) =>{
+  const {id} = req.params ;
+  const {student} = req.body;
+  const result = await StudentServices.updateStudentToDB(id as string , student);
+
+  sendResponse(res, { 
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Student data successfully updated",
+    data: result
+  })
+
+})
+
 //delete student data:
 const deleteStudent: RequestHandler = catchAsync(async (req, res, next) => {
   const { id } = req.params;
@@ -46,5 +64,6 @@ const deleteStudent: RequestHandler = catchAsync(async (req, res, next) => {
 export const StudentController = {
   getSingleStudent,
   getAllStudents,
+  updateStudent,
   deleteStudent,
 };

@@ -160,6 +160,8 @@ studentSchema.pre( 'aggregate', function (next){
   this.pipeline().unshift({$match: { isDeleted: { $ne: true}}})
 });
 
+ 
+
 //creating a custom static method:
 studentSchema.statics.isUserExist = async function (id: string) {
   const existingUser = await Student.findOne({ id });

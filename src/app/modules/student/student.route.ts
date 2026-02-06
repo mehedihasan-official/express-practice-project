@@ -11,6 +11,9 @@ router.get("/", StudentController.getAllStudents);
 //Router to get single Student data by id:
 router.get("/:id", StudentController.getSingleStudent);
 
+//Router to Update Student data by id:
+router.patch("/:id", StudentController.updateStudent)
+
 //Router to Delete Student data by id:
 router.delete("/:id", StudentController.deleteStudent);
 
