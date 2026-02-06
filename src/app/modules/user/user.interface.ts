@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 
 export type TUser = {
     id: string;

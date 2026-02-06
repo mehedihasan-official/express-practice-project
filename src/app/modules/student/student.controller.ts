@@ -14,7 +14,7 @@ const getSingleStudent = catchAsync(async (req, res, next) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Student is created successfully",
+    message: "Get single student successfully",
     data: result,
   });
 });
@@ -25,22 +25,23 @@ const getAllStudents: RequestHandler = catchAsync(async (req, res, next) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Student is created successfully",
+    message: "Get all Student Successfully",
     data: result,
   });
 });
 
 //delete student data:
 const deleteStudent: RequestHandler = catchAsync(async (req, res, next) => {
-  const { studentId } = req.params;
-  const result = await StudentServices.deleteStudentFromDB(studentId as string);
+  const { id } = req.params;
+  const result = await StudentServices.deleteStudentFromDB(id as string);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Student is created successfully",
+    message: "Deleted Student successfully",
     data: result,
   });
 });
+
 
 export const StudentController = {
   getSingleStudent,
