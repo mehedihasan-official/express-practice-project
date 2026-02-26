@@ -23,6 +23,15 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Practice Project Backend is running...");
 });
 
+//test error:
+const test = async (req: Request, res: Response) =>{
+Promise.reject();
+const a = 10;
+res.send(a)
+}
+
+app.get("/", test);
+
 // Not Found middleware (must be after all routes)
 app.use(notFound);
 

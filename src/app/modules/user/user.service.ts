@@ -1,5 +1,5 @@
 import httpStatus from "http-status";
-import mongoose from "mongoose";
+import mongoose, { Error } from "mongoose";
 import config from "../../config";
 import AppError from "../../errors/AppError";
 import { TAcademicSemester } from "../academicSemester/academicSemester.interface";
@@ -63,15 +63,15 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     }
 
     await session.commitTransaction();
-    session.endSession();
+    await session.endSession();
     return newStudent;
 
 
 
-  } catch (error) {
+  } catch (err: any) {
     await session.abortTransaction();
-    session.endSession();
-    throw error;
+    await session.endSession();
+    throw new Error(err);
   }
 };
 

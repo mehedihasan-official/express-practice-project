@@ -6,8 +6,31 @@ import { TStudent } from "./student.interface";
 import { Student } from "./student.model";
 
 // service function to get all students from DB
-const getAllStudentsFromDB = async () => {
-  const result = await Student.find()
+const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
+
+  const studentSearchableFields = [
+    "email",
+    "presentAddress",
+    "name.firstName",
+    "name.lastName",
+  ];
+
+  const searchTerm = (query?.searchTerm as string) || "";
+
+
+  const searchQuery =
+    searchTerm.trim().length > 0
+      ? {
+          $or: studentSearchableFields.map((field) => ({
+            [field]: {
+              $regex: searchTerm,
+              $options: "i",
+            },
+          })),
+        }
+      : {};
+
+  const result = await Student.find(searchQuery)
     .populate("admissionSemester")
     .populate({
       path: "academicDepartment",
@@ -15,9 +38,9 @@ const getAllStudentsFromDB = async () => {
         path: "academicFaculty",
       },
     });
+
   return result;
 };
-
 // service function to get single student from DB by id
 const getSingleStudentFromDB = async (id: string) => {
   const result = await Student.findOne({ id })
@@ -57,8 +80,6 @@ const updateStudentToDB = async (id: string, payload: Partial<TStudent>) => {
       modifiedUpdatedData[`guardian.${key}`] = value;
     }
   }
-
-
 
   const result = await Student.findOneAndUpdate({ id }, modifiedUpdatedData, {
     new: true,

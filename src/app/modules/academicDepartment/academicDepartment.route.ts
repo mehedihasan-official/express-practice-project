@@ -8,7 +8,7 @@ import validationRequest from '../../middlewares/validateRequest';
 const router = express.Router();
 
 
-router.post('/', academicDepartmentController.createAcademicDepartment);
+router.post('/', validationRequest(AcademicDepartmentValidation.createAcademicDepartmentValidationSchema) ,academicDepartmentController.createAcademicDepartment);
 router.put('/:id', validationRequest(AcademicDepartmentValidation.updateAcademicDepartmentValidationSchema) ,academicDepartmentController.updateAcademicDepartment);
 router.get('/', academicDepartmentController.getAllAcademicDepartments);
 router.get('/:id', academicDepartmentController.getSingleAcademicDepartment);
