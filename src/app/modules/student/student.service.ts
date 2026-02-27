@@ -7,7 +7,7 @@ import { Student } from "./student.model";
 
 // service function to get all students from DB
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
-  console.log("query", query);
+
   const queryObj = { ...query };
 
   const studentSearchableFields = [
@@ -29,9 +29,11 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
   });
 
   //filtering:
-  const excludeFields = ["searchTerm", "sort", "limit", "page"];
+  const excludeFields = ["searchTerm", "sort", "limit", "page", "fields"];
 
   excludeFields.forEach((el) => delete queryObj[el]);
+
+    console.log({query}, {queryObj});
 
   const filterQuery = searchQuery
     .find(queryObj)
@@ -67,9 +69,20 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 
   const paginateQuery = sortQuery.skip(skip);
 
-  const limitQuery = await paginateQuery.limit(limit);
+  const limitQuery = paginateQuery.limit(limit);
+  
 
-  return limitQuery;
+  //fields limitation:
+
+  let fields = "-__v";
+  if (query?.fields){
+    fields = (query.fields as string).split(",").join(" ");
+    console.log(fields)
+  }
+
+  const fieldQuery = await limitQuery.select(fields);
+
+  return fieldQuery;
 };
 
 // service function to get single student from DB by id
