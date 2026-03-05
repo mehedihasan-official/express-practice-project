@@ -1,9 +1,10 @@
 import { QueryBuilder } from "../../builder/QueryBueld";
 import { CourseSearchableFields } from "./course.constant";
+import { TCourse } from "./course.interface";
 import { Course } from "./course.model";
 
-const createCourse = async () => {
-  const result = await Course.create();
+const createCourseIntoDB = async (payload: TCourse) => {
+  const result = await Course.create(payload);
   return result;
 };
 
@@ -27,7 +28,7 @@ const getSingleCourseFromDB = async (id: string) => {
   return result;
 };
 
-const updateCourseIntoDB = async (id: string, payload: Partial<Coures>) => {
+const updateCourseIntoDB = async (id: string, payload: Partial<Course>) => {
   const result = await Course.findByIdAndUpdate(id, payload);
   return result;
 };
@@ -42,7 +43,7 @@ const deleteCourseFromDB = async (id: string) => {
 };
 
 export const CourseServices = {
-  createCourse,
+  createCourseIntoDB,
   getAllCoursesFromDB,
   getSingleCourseFromDB,
   updateCourseIntoDB,

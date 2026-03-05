@@ -1,26 +1,24 @@
-import sendResponse from "../../utils/sendResponse";
+
 import { CourseServices } from "./course.service";
 import  httpStatus, { status }  from 'http-status';
-import sendResponse from './../../utils/sendResponse';
 import { STATUS_CODES } from "node:http";
 import { success } from "zod";
+import catchAsync from "../../utils/catchAsync";
+import sendResponse from "../../utils/sendResponse";
 
 
 
 // Create a Course Data
-const createCourse = async (req, res) =>{
-    const {course} = req.body;
-    const result = await CourseServices.createCourse(course);
+const createCourse = catchAsync(async (req, res) => {
+  const result = await CourseServices.createCourseIntoDB(req.body);
 
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Course created successfully",
-        data: result,
-    })
-    
-}
-
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Course is created succesfully',
+    data: result,
+  });
+});
 
 // Get all course data:
 const getAllCourse = async (req, res) => {

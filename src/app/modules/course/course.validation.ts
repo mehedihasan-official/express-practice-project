@@ -1,23 +1,43 @@
-import { z } from 'zod';
+import z from "zod/v3";
+
 
 const PreRequisiteCourseValidationSchema = z.object({
-  course: z.string(),
+  course: z
+    .string()
+    .regex(/^[0-9a-fA-F]{24}$/, 'Invalid MongoDB ObjectId'),
   isDeleted: z.boolean().optional(),
 });
 
 const createCourseValidationSchema = z.object({
   body: z.object({
-    title: z.string(),
-    prefix: z.string(),
-    code: z.number(),
-    credits: z.number(),
-    preRequisiteCourses: z.array(PreRequisiteCourseValidationSchema).optional(),
+    title: z.string({
+      required_error: 'Title is required',
+    }),
+
+    prefix: z.string({
+      required_error: 'Prefix is required',
+    }),
+
+    code: z.number({
+      required_error: 'Code is required',
+    }),
+
+    credits: z.number({
+      required_error: 'Credits is required',
+    }),
+
+    preRequisiteCourses: z
+      .array(PreRequisiteCourseValidationSchema)
+      .optional(),
+
     isDeleted: z.boolean().optional(),
   }),
 });
 
 const updatePreRequisiteCourseValidationSchema = z.object({
-  course: z.string(),
+  course: z
+    .string()
+    .regex(/^[0-9a-fA-F]{24}$/, 'Invalid MongoDB ObjectId'),
   isDeleted: z.boolean().optional(),
 });
 
