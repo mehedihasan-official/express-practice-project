@@ -4,6 +4,7 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { StudentServices } from "./student.service";
 
+
 // get single student data:
 const getSingleStudent = catchAsync(async (req, res, next) => {
   const { id } = req.params;
