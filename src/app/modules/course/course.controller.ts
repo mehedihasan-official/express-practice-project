@@ -50,17 +50,20 @@ const getSingleCourse = async (req, res) => {
 
 // Update Course data:
 const updateCourse = async (req, res) => {
-    const {id} = req.params;
-    const {course} = req.body;
-    const result = await CourseServices.updateCourseIntoDB(id as string, course);
+  const { id } = req.params;
 
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Course data successfully updated",
-        data: result,
-    })
-}
+  const result = await CourseServices.updateCourseIntoDB(
+    id as string,
+    req.body
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Course data successfully updated",
+    data: result,
+  });
+};
 
 
 
