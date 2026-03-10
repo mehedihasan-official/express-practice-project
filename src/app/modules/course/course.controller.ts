@@ -100,5 +100,6 @@ export const CourseController = {
     getAllCourse,
     getSingleCourse,
     updateCourse,
-    deleteCourse
+    deleteCourse,
+    assignFaculties
 }
