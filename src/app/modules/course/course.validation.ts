@@ -42,16 +42,16 @@ const updatePreRequisiteCourseValidationSchema = z.object({
 });
 
 const updateCourseValidationSchema = createCourseValidationSchema.partial({
-  // body: z.object({
-  //   title: z.string().optional(),
-  //   prefix: z.string().optional(),
-  //   code: z.number().optional(),
-  //   credits: z.number().optional(),
-  //   preRequisiteCourses: z
-  //     .array(updatePreRequisiteCourseValidationSchema)
-  //     .optional(),
-  //   isDeleted: z.boolean().optional(),
-  // }),
+  body: z.object({
+    title: z.string().optional(),
+    prefix: z.string().optional(),
+    code: z.number().optional(),
+    credits: z.number().optional(),
+    preRequisiteCourses: z
+      .array(updatePreRequisiteCourseValidationSchema)
+      .optional(),
+    isDeleted: z.boolean().optional(),
+  }),
 });
 
 const facultiesWithCourseValidationSchema = z.object({

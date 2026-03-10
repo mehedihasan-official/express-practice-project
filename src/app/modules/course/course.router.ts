@@ -25,6 +25,9 @@ router.patch(
   CourseController.updateCourse,
 );
 
+//Course 
+router.put("/:courseId/assign-faculties")
+
 //Course router to Delete course data :
 router.delete("/:id", CourseController.deleteCourse);
 

@@ -78,6 +78,19 @@ const deleteCourse = async (req, res) => {
         message: "Deleted course successfully",
         data: result,
     })
+
+}
+const assignFaculties = async (req, res) => {
+    const {courseId} = req.params;
+    const {faculties} = req.body;
+    const result = await CourseServices.assignFacultiesWithCourseIntoDB(courseId as string, faculties);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Deleted course successfully",
+        data: result,
+    })
 }
 
 
