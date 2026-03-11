@@ -47,17 +47,18 @@ export const Course = model<TCourse>('Course', courseSchema);
 
 
 const courseFacultySchema = new Schema<TCourseFaculty>({
- course: {
+  course: {
     type: Schema.Types.ObjectId,
-    ref: "Course",
+    ref: 'Course',
     unique: true,
   },
-  faculties: [{
-    type: Schema.Types.ObjectId,
-    ref: "Faculty",
-  }]
-
-})
+  faculties: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Faculty',
+    },
+  ],
+});
 
 
 export const CourseFaculty = model<TCourseFaculty>('CourseFaculty', courseFacultySchema);

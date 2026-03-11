@@ -110,8 +110,6 @@ const updateCourseIntoDB = async (id: string, payload: Partial<TCourse>) => {
     await session.abortTransaction();
     await session.endSession();
     throw new AppError(httpStatus.BAD_REQUEST, "Failed to update Course Info");
-
-    
   }
 };
 
@@ -124,20 +122,23 @@ const deleteCourseFromDB = async (id: string) => {
   return result;
 };
 
-
-const assignFacultiesWithCourseIntoDB = async (id: string, payload: Partial<TCourseFaculty>) =>{
- const result = await CourseFaculty.findOneAndUpdate(
-  id as unknown as Record<string, unknown>,
-  {
-    $addToSet: { faculties: { $each: payload}}
-  },
-  {
-    upsert: true,
-    new: true
-  }
- );
- return result;
-}
+const assignFacultiesWithCourseIntoDB = async (
+  id: string,
+  payload: Partial<TCourseFaculty>,
+) => {
+  const result = await CourseFaculty.findByIdAndUpdate(
+    id,
+    {
+      course: id, 
+      $addToSet: { faculties: { $each: payload } },
+    },
+    {
+      upsert: true,
+      new: true,
+    },
+  );
+  return result;
+};
 
 export const CourseServices = {
   createCourseIntoDB,
@@ -145,5 +146,5 @@ export const CourseServices = {
   getSingleCourseFromDB,
   updateCourseIntoDB,
   deleteCourseFromDB,
-  assignFacultiesWithCourseIntoDB
+  assignFacultiesWithCourseIntoDB,
 };
